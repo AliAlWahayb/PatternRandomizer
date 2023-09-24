@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="image">
+    <file>die_icon31024.png</file>
+  </qresource>
+</RCC>
