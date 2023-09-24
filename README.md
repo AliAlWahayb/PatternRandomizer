@@ -1,30 +1,23 @@
 
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
-<<<<<<< HEAD
-# PatternRandomizer
-=======
-# NumberRandomizer
->>>>>>> 1f9ff0f96a7953dd91936bd3aa742a0a2f871b6e
 
-This program is designed to simulate Random numbers keyboard presses. It is primarily intended for randomizing building patterns in Minecraft and sandbox games
+# PatternRandomizer
+
+This program is designed to simulate Random number keyboard presses. It is primarily intended for randomizing building patterns in Minecraft and sandbox games
 
 
 ## Features
 
 ![Overview](ignore/AppImage.jpg)
 
-- Random Number Generation: The program provides a reliable random number generation algorithm to generate random numbers within a specified range.
+- Random Pattern Generation: The program provides a reliable random Pattern generation algorithm to generate random Patterns within a specified range.
 - Keyboard Press Simulation: You can simulate keyboard presses in Minecraft or other sandbox games. This feature allows you to easily randomize building patterns by automatically pressing keys.
 - Customizable Delay: You can set a customizable delay between each keyboard press to control the speed and timing of the building pattern randomization.
 - Configurable Keybindings: You can easily configure and customize the keybindings for specific actions, giving you flexibility and control over the simulated keyboard inputs.
 
 ## Download
-<<<<<<< HEAD
-Download the latest version from the [releases](https://raw.githubusercontent.com/AliAlWahayb/Number-Randomizer/main/NumberRandomizer.exe) page.
-=======
-Download the latest version from the [releases](https://raw.githubusercontent.com/AliAlWahayb/Number-Randomizer/main/NumberRandomizer.exe).
->>>>>>> 1f9ff0f96a7953dd91936bd3aa742a0a2f871b6e
 
+Download the latest version from the [releases](https://github.com/AliAlWahayb/PatternRandomizer/releases) page.
 
 ## Contributing
 
