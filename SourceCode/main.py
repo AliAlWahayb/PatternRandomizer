@@ -4,7 +4,7 @@ import random
 import sys
 import time
 
-from pynput import keyboard
+from global_hotkeys import *
 from pynput.keyboard import Controller, Key
 from pynput.mouse import Listener
 from PyQt5 import QtWidgets, uic
@@ -23,6 +23,7 @@ myappid = u'PatternRandomizer'
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 # i dont understand it
 
+
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
@@ -30,12 +31,14 @@ class MainWindow(QMainWindow):
         self.ui = Ui_PatternRandomizer()
         self.ui.setupUi(self)
         self.initUI()
-        
-    #add self.ui to fix 
+
+    # add self.ui to fix
     def initUI(self):  # initialize
-        self.setWindowIcon(QIcon(u":/image/die_icon31024.png"))# for WindowIcon
+        # for WindowIcon
+        self.setWindowIcon(QIcon(u":/image/die_icon31024.png"))
         self.numbers = []  # the list of numbers to chose from
-        self.ui.TimeSpinBox.setValue(100) # to give people the chioce to go faster at thier oun risk
+        # to give people the chioce to go faster at thier oun risk
+        self.ui.TimeSpinBox.setValue(100)
         self.ui.StartBtn.clicked.connect(self.StartBtnFun)
         self.ui.StopBtn.clicked.connect(self.StopBtnFun)
         self.ui.HotkeyBtn.clicked.connect(self.HotkeyBtnFun)
@@ -52,9 +55,9 @@ class MainWindow(QMainWindow):
         self.ui.DeselectAllBtn.clicked.connect(self.DeselectAllfun)
         self.MouseListener = None  # for mouse listener
         self.RepeatCounter = 0  # Repat counter
-        self.Settings = QSettings("PatternRandomizer", "PatternRandomizer")# to make settings file
+        # to make settings file
+        self.Settings = QSettings("PatternRandomizer", "PatternRandomizer")
         self.SettingsConfig()  # to apply settings
-
 
     def StartBtnFun(self):  # start the app
         if not self.numbers:  # if list is empty
@@ -176,30 +179,32 @@ class MainWindow(QMainWindow):
     def HotkeyBtnFun(self):
         if self.ui.shortcut_edit.keySequence().isEmpty():  # if keySequenceEdit is empty
             QMessageBox.warning(
-                self, "Invalid Shortcut", "Please enter a valid shortcut.\nMax length is 1 & No special characters")  # error message
+                self, "Invalid Shortcut", "Please enter a valid shortcut.")  # error message
         else:  # if keySequenceEdit is not empty
             try:  # try expect for hotkey length and special characters
-                self.HotkeySequence = self.ui.shortcut_edit.keySequence().toString().upper()[
-                    0]
-                self.hotkeyFun()  # sends hotkey value to the globla hotkey
+                self.HotkeySequence = self.ui.shortcut_edit.keySequence().toString().lower()
+                self.hotkeyFun()  # call the hotkey function to assign
                 # change button text to add the hotkey
                 self.ui.StartBtn.setText(
-                    "Start  ({})".format(self.HotkeySequence))
+                    "Start  ({})".format(self.HotkeySequence.upper()))
                 # change button text to add the hotkey
-                self.ui.StopBtn.setText("Stop  ({})".format(self.HotkeySequence))
+                self.ui.StopBtn.setText(
+                    "Stop  ({})".format(self.HotkeySequence.upper()))
+
             # self.shortcut_edit.setEnabled(False)#diable the keySequenceEdit #no need
             except Exception:
                 QMessageBox.warning(
-                    self, "Invalid Shortcut", "Please enter a valid shortcut.\nMax length is 1 & No special characters")  # error message
+                    self, "Invalid Shortcut", "Please enter a valid shortcut.")  # error message
 
     # for globla hotkey
 
     def hotkeyFun(self):  # assign the globla hotkey and start listening
-        if not self.ui.shortcut_edit.keySequence().isEmpty():  # if keySequenceEdit is not empty
-            self.HotkeyListener = keyboard.GlobalHotKeys({
-                self.ui.shortcut_edit.keySequence().toString(): self.OnHotkeyClick
-            })  # assign the globla hotkey
-            self.HotkeyListener.start()  # start the hotkey listener
+        clear_hotkeys()  # clear all hotkeys
+        # get hotkey from HotkeySequence
+        self.bindings = [[self.HotkeySequence,
+                          self.OnHotkeyClick, None, False]]
+        register_hotkeys(self.bindings)  # register hotkeys
+        start_checking_hotkeys()  # start listening
 
     # for globla hotkey
     def OnHotkeyClick(self):  # what the hotkey dose when pressed
@@ -215,12 +220,13 @@ class MainWindow(QMainWindow):
 
     def SettingsConfig(self):  # applies settings at startup
         # move the window position at startup
-        try:#for first start error
+        try:  # for first start error
             self.move(self.Settings.value("WindowPosition"))
-             # set TimeSpinBox value at startup
+            # set TimeSpinBox value at startup
             self.ui.TimeSpinBox.setValue(self.Settings.value("TimeSpinBox"))
             # set RepeatSpinBox value at startup
-            self.ui.RepeatSpinBox.setValue(self.Settings.value("RepeatSpinBox"))
+            self.ui.RepeatSpinBox.setValue(
+                self.Settings.value("RepeatSpinBox"))
             self.HotkeySequence = (self.Settings.value(
                 "HotkeySequence"))  # get the hotkey sequence
             self.ui.shortcut_edit.setKeySequence(
@@ -244,12 +250,10 @@ class MainWindow(QMainWindow):
         except Exception:
             pass
         self.StopBtnFun()  # stops running in the background
-        try:  # for globla hotkey
-            self.HotkeyListener.stop()  # stops the hotkey listener
-        except Exception:
-            pass
+        stop_checking_hotkeys()  # Stops the hotkey listening
         event.accept()  # IDK
         super().closeEvent(event)
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
