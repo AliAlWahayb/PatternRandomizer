@@ -63,13 +63,9 @@ class MainWindow(QMainWindow):
         if not self.numbers:  # if list is empty
             pass  # QMessageBox gives an error QObject::setParent: Cannot set parent, new parent is in a different thread
         else:  # if list is not empty
-            self.ui.StopBtn.setEnabled(True)  # enable stop button
-            self.ui.StartBtn.setEnabled(False)  # disable start button
             self.mainfun()  # run the main function
 
     def StopBtnFun(self):  # stop the app
-        self.ui.StopBtn.setEnabled(False)  # disable stop button
-        self.ui.StartBtn.setEnabled(True)  # enable start button
         self.OnClickRadioButtonfun(False)  # stop mouse listener
         self.RepeatCounter = 0  # reset Repat counter
 
@@ -77,62 +73,41 @@ class MainWindow(QMainWindow):
 
     def Btn1fun(self):
         self.numbers.append(1)
-        self.ui.Btn1.setEnabled(False)
 
     def Btn2fun(self):
         self.numbers.append(2)
-        self.ui.Btn2.setEnabled(False)
 
     def Btn3fun(self):
         self.numbers.append(3)
-        self.ui.Btn3.setEnabled(False)
 
     def Btn4fun(self):
         self.numbers.append(4)
-        self.ui.Btn4.setEnabled(False)
 
     def Btn5fun(self):
         self.numbers.append(5)
-        self.ui.Btn5.setEnabled(False)
 
     def Btn6fun(self):
         self.numbers.append(6)
-        self.ui.Btn6.setEnabled(False)
 
     def Btn7fun(self):
         self.numbers.append(7)
-        self.ui.Btn7.setEnabled(False)
 
     def Btn8fun(self):
         self.numbers.append(8)
-        self.ui.Btn8.setEnabled(False)
 
     def Btn9fun(self):
         self.numbers.append(9)
-        self.ui.Btn9.setEnabled(False)
 
     def SelectAllfun(self):  # select All
         self.numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]  # fill the list
-        buttons = [self.ui.Btn1, self.ui.Btn2, self.ui.Btn3, self.ui.Btn4, self.ui.Btn5, self.ui.Btn6,
-                   self.ui.Btn7, self.ui.Btn8, self.ui.Btn9]  # loop and disable all buttons
-        for button in buttons:
-            button.setEnabled(False)
 
     def DeselectAllfun(self):  # deselect all
         self.numbers = []  # empty the list
-        buttons = [self.ui.Btn1, self.ui.Btn2, self.ui.Btn3, self.ui.Btn4, self.ui.Btn5,
-                   self.ui.Btn6, self.ui.Btn7, self.ui.Btn8, self.ui.Btn9]  # loop and enable all buttons
-        for button in buttons:
-            button.setEnabled(True)
 
     def mainfun(self):  # main function
         if self.ui.OnClickRadioButton.isChecked():  # to check if checked no need to initialize
             self.OnClickRadioButtonCheckedfun()  # OnClick Radio Button Checked function
         elif self.ui.TimeRadioButton.isChecked():  # to check if checked no need to initialize
-            try:  # for globla hotkey
-                self.hotkeyFun()  # this fix the disabling of the hotkey
-            except Exception:
-                pass
             while self.ui.StopBtn.isEnabled():  # while app works
                 self.TimeRadioButtonCheckedfun()  # Time Radio Button Checked function
             # bug: prints one more after stopping with hotkey
@@ -209,9 +184,9 @@ class MainWindow(QMainWindow):
     # for globla hotkey
     def OnHotkeyClick(self):  # what the hotkey dose when pressed
         if self.ui.StartBtn.isEnabled():  # if app not running
-            self.StartBtnFun()  # start app
+            self.ui.StartBtn.click()  # start app
         elif self.ui.StopBtn.isEnabled():  # if app running
-            self.StopBtnFun()  # stop app
+            self.ui.StopBtn.click()   # stop app
 
     def RepeatCounterFun(self):  # Repeat Radio Button Checked function
         self.RepeatCounter += 1  # for each repeat
